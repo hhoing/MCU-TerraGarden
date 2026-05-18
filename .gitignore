@@ -1,0 +1,18 @@
+# Arduino build artifacts
+build/
+*.hex
+*.elf
+*.bin
+
+# Arduino IDE temp files
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Arduino libraries (install locally)
+libraries/
