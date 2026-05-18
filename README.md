@@ -3,6 +3,14 @@
 A smart terrarium controller built on the [Seeed Wio Terminal](https://www.seeedstudio.com/Wio-Terminal-p-4509.html).  
 It monitors environmental conditions and lets you control misting and background music directly from the device — no cloud connection required.
 
+## Screenshots
+
+| Sensor Screen | Water Control | Sound Control |
+|---------------|---------------|---------------|
+| ![sensor](assets/screen_sensor.jpg) | ![water](assets/screen_water.jpg) | ![sound](assets/screen_sound.jpg) |
+
+> Replace the placeholder images above with actual photos of the Wio Terminal display.
+
 ## Features
 
 - **Environmental monitoring** — reads temperature and humidity from a BME280 sensor with color-coded status (blue = cold/dry, green = normal, red = hot/humid)
@@ -12,13 +20,62 @@ It monitors environmental conditions and lets you control misting and background
 
 ## Hardware
 
-| Component | Notes |
-|-----------|-------|
-| Seeed Wio Terminal | Main MCU + TFT display |
-| BME280 | Temperature & humidity sensor (I2C) |
-| Ultrasonic atomizer | Connected to pin A0, PWM-controlled |
-| DFRobot DFPlayer Mini | MP3 player module (SoftwareSerial pins 7, 8) |
-| MicroSD card | Loaded into DFPlayer with audio tracks |
+| Component | Interface | Notes |
+|-----------|-----------|-------|
+| Seeed Wio Terminal | — | Main MCU + TFT display |
+| BME280 | I2C (SDA/SCL) | Temperature & humidity sensor |
+| Ultrasonic atomizer | PWM (A0) | 3 power levels via `analogWrite` |
+| DFRobot DFPlayer Mini | SoftwareSerial (TX=7, RX=8) | MP3 player module |
+| MicroSD card | — | Loaded into DFPlayer with audio tracks |
+| Buttons (×3) | GPIO INPUT_PULLUP | Screen navigation |
+| 5-way joystick | GPIO INPUT_PULLUP | Parameter control |
+
+## Communication Protocols
+
+```
+[Wio Terminal]
+     │
+     ├─ I2C (SDA/SCL) ────► BME280
+     │   • Address: 0x76 (default)
+     │   • Reads: temperature, humidity
+     │   • Library: Seeed_BME280
+     │
+     ├─ PWM (A0) ─────────► Ultrasonic atomizer
+     │   • analogWrite: 0 / 100 / 180 / 255
+     │   • Level 0 = OFF, Level 3 = full power
+     │
+     ├─ SoftwareSerial ───► DFRobot DFPlayer Mini
+     │   • TX pin: 7,  RX pin: 8
+     │   • Baud rate: 9600
+     │   • Commands: play(n), pause(), volume(n)
+     │   • Protocol: DFPlayer Mini serial command set
+     │
+     └─ GPIO (INPUT_PULLUP)
+         • WIO_KEY_A / B / C  — screen navigation
+         • WIO_5S_UP/DOWN/LEFT/RIGHT/PRESS — parameter control
+```
+
+### DFPlayer Mini Serial Protocol
+
+Commands are sent as 10-byte frames over UART at 9600 baud:
+
+```
+[0x7E] [0xFF] [0x06] [CMD] [0x00] [param_hi] [param_lo] [checksum_hi] [checksum_lo] [0xEF]
+```
+
+| Command | Byte (CMD) | Description |
+|---------|-----------|-------------|
+| Play track n | 0x03 | Start playing file n |
+| Pause | 0x0E | Pause playback |
+| Set volume | 0x06 | Volume 0–30 |
+
+### I2C — BME280
+
+| Signal | Pin |
+|--------|-----|
+| SDA | Grove SDA (D4) |
+| SCL | Grove SCL (D5) |
+| Address | 0x76 |
 
 ## Controls
 
@@ -63,6 +120,7 @@ Install these libraries via the Arduino Library Manager or manually:
 ```
 TerraGarden/
 ├── TerraGarden.ino   # Main sketch
+├── assets/           # Screenshots
 ├── .gitignore
 └── README.md
 ```
