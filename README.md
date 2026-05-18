@@ -5,7 +5,8 @@ It monitors environmental conditions and lets you control misting and background
 
 ## Circuit Diagram
 
-![Circuit Diagram](assets/circuit_diagram.png)
+<img width="1342" height="637" alt="image" src="https://github.com/user-attachments/assets/d8b0bcfc-0b27-45e1-ace9-f9850dc358e3" />
+
 
 ## Features
 
