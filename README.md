@@ -67,6 +67,4 @@ TerraGarden/
 └── README.md
 ```
 
-## License
 
-MIT
