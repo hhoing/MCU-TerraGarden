@@ -3,13 +3,9 @@
 A smart terrarium controller built on the [Seeed Wio Terminal](https://www.seeedstudio.com/Wio-Terminal-p-4509.html).  
 It monitors environmental conditions and lets you control misting and background music directly from the device — no cloud connection required.
 
-## Screenshots
+## Circuit Diagram
 
-| Sensor Screen | Water Control | Sound Control |
-|---------------|---------------|---------------|
-| ![sensor](assets/screen_sensor.jpg) | ![water](assets/screen_water.jpg) | ![sound](assets/screen_sound.jpg) |
-
-> Replace the placeholder images above with actual photos of the Wio Terminal display.
+![Circuit Diagram](assets/circuit_diagram.png)
 
 ## Features
 
